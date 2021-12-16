@@ -1,0 +1,25 @@
+{
+  "name": "owlswatchingweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tong-meow/OwlsWatchingWeb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tong-meow/OwlsWatchingWeb/issues"
+  },
+  "homepage": "https://github.com/tong-meow/OwlsWatchingWeb#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "mongoose": "^6.1.2"
+  }
+}
