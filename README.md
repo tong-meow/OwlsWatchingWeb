@@ -1,5 +1,5 @@
 # OwlsWatchingWeb
-- This website allows users to search, share and comment wildlife (especially owls) watching places arount USA.
+- This website allows users to search, share and comment wildlife (especially owls) watching places in USA.
 - This website has a 'wiki' for the owl, and for owl watching.
 - I LOVE OWLS!
 
