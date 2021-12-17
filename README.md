@@ -1,4 +1,4 @@
-# OwlsWatchingWeb
+# Owls Watching Web
 - This website allows users to search, share and comment wildlife (especially owls) watching places in USA.
 - This website has a 'wiki' for the owl, and for owl watching.
 - <b>I LOVE OWLS!</b>
@@ -13,7 +13,8 @@
 
 ## Developer Diary
 ### 12/16/2021
-- Initialized the project: import ejs, express, mongoose.
+- Initialized the project: import ejs, express, mongoose, method-override.
 - Created the blank home page ("/home").
 - Added (fake) seeds for owls watching spots ("/watchingspots").
 - Added the index and show pages for watching spots ("/watchingspots/:id").
+- Added edit page and delete request button for every watching spot ("/watchingspots/:id/edit").
