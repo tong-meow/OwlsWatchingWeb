@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
 const Watchingspot = require('./models/watchingspot');
 
 mongoose.connect('mongodb://localhost:27017/owls-watch');
@@ -19,6 +20,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 
 // GET / : homepage
 app.get('/', (req, res) => {
@@ -46,8 +48,29 @@ app.post('/watchingspots', async (req, res) => {
 
 // GET /watchingspots/:id : view one watching spot's information page
 app.get('/watchingspots/:id', async(req, res) => {
-    const watchingspot = await Watchingspot.findById(req.params.id);
-    res.render('watchingspots/show', { watchingspot });
+    const ws = await Watchingspot.findById(req.params.id);
+    res.render('watchingspots/show', { ws });
+})
+
+// GET /watchingspots/:id/edit : edit page to a watching spot
+app.get('/watchingspots/:id/edit', async(req, res) => {
+    const ws = await Watchingspot.findById(req.params.id);
+    res.render('watchingspots/edit', { ws });
+})
+
+// PUT /watchingspots/:id : submit edit
+app.put('/watchingspots/:id', async(req, res) => {
+    const { id } = req.params;
+    const ws = await Watchingspot.findByIdAndUpdate(id, { ...req.body.watchingspot });
+    res.redirect(`/watchingspots/${ws._id}`);
+})
+
+// DELETE /watchingspots/:id : submit delete request
+// and redirect to the index page of watching spots
+app.delete('/watchingspots/:id', async(req, res) => {
+    const { id } = req.params;
+    await Watchingspot.findByIdAndDelete(id);
+    res.redirect('/watchingspots');
 })
 
 // start listening on localhost port 3000
