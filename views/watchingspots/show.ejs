@@ -7,9 +7,13 @@
     <title>Watching Spot</title>
 </head>
 <body>
-    <h1><%= watchingspot.title %></h1>
-    <h2><%= watchingspot.location %></h2>
+    <h1><%= ws.title %></h1>
+    <h2><%= ws.location %></h2>
     <footer>
+        <a href="/watchingspots/<%= ws._id %>/edit">Edit</a>
+        <form action="/watchingspots/<%= ws._id %>?_method=DELETE" method="POST">
+            <button>Delete</button>
+        </form>
         <a href="/watchingspots">Back</a>
     </footer>
 </body>
