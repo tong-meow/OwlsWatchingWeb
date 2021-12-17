@@ -9,14 +9,15 @@
 <body>
     <form action="/watchingspots" method="POST">
         <div>
-            <label for="title"></label>
-            <input type="text" id="title" bane="watchingspot[title]">
+            <label for="title">Title: </label>
+            <input type="text" id="title" name="watchingspot[title]">
         </div>
         <div>
-            <label for="location"></label>
-            <input type="text" id="location" bane="watchingspot[location]">
+            <label for="location">Location: </label>
+            <input type="text" id="location" name="watchingspot[location]">
         </div>
         <button>Add Watching Spot</button>
     </form>
+    <a href="/watchingspots">Back</a>
 </body>
 </html>
