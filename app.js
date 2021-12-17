@@ -23,13 +23,14 @@ app.get('/', (req, res) => {
     res.render('home');
 })
 
-app.get('/createwatchingspot', async (req, res) => {
-    const spot = new Watchingspot({
-        title: 'Yellowstone National Park',
-        description: 'Large national park',
-    })
-    await spot.save();
-    res.send(spot);
+app.get('/watchingspots', async (req, res) => {
+    const watchingspots = await Watchingspot.find({});
+    res.render('watchingspots/index', { watchingspots });
+})
+
+app.get('/watchingspots/:id', async(req, res) => {
+    const watchingspot = await Watchingspot.findById(req.params.id);
+    res.render('watchingspots/show', { watchingspot });
 })
 
 app.listen(3000, () => {
