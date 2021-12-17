@@ -28,6 +28,10 @@ app.get('/watchingspots', async (req, res) => {
     res.render('watchingspots/index', { watchingspots });
 })
 
+app.get('/watchingspots/new', (req, res) => {
+    res.render('watchingspots/new');
+})
+
 app.get('/watchingspots/:id', async(req, res) => {
     const watchingspot = await Watchingspot.findById(req.params.id);
     res.render('watchingspots/show', { watchingspot });
