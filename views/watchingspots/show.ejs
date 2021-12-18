@@ -1,20 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watching Spot</title>
-</head>
-<body>
-    <h1><%= ws.title %></h1>
-    <h2><%= ws.location %></h2>
-    <footer>
-        <a href="/watchingspots/<%= ws._id %>/edit">Edit</a>
-        <form action="/watchingspots/<%= ws._id %>?_method=DELETE" method="POST">
-            <button>Delete</button>
-        </form>
-        <a href="/watchingspots">Back</a>
-    </footer>
-</body>
-</html>
+<% layout('layouts/BoilerPlate') %>
+
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card mb-8">
+                <img src="<%= ws.image %>" class="card-img-top" alt="Owls Watching Spot">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= ws.title %>
+                    </h5>
+                    <p class="card-text">
+                        <%= ws.description %>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Location: <%= ws.location %>
+                    </li>
+                    <li class="list-group-item">Type of Owls: <%= ws.typeOfOwl %>
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <a class="card-link btn btn-success" href="/watchingspots" class="card-link">Back</a>
+                    <a class="card-link btn btn-success" href="/watchingspots/<%= ws._id %>/edit"
+                        class="card-link">Edit</a>
+                    <form class="d-inline" action="/watchingspots/<%= ws._id %>?_method=DELETE" method="POST">
+                        <button class="card-link btn btn-warning">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
