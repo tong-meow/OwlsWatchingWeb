@@ -18,3 +18,6 @@
 - Added (fake) seeds for owls watching spots ("/watchingspots").
 - Added the index and show pages for watching spots ("/watchingspots/:id").
 - Added edit page and delete request button for every watching spot ("/watchingspots/:id/edit").
+
+### 12/17/2021
+- Use bootstrap, added some basic style for the currently existed pages.
