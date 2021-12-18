@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Watching Spot</title>
-</head>
-<body>
-    <h1>Edit Watching Spot</h1>
+<% layout('layouts/BoilerPlate') %>
+    <!-- <h1>Edit Watching Spot</h1>
     <form action="/watchingspots/<%= ws._id %>?_method=PUT" method="POST">
         <div>
             <label for="title">Title: </label>
@@ -19,6 +11,40 @@
         </div>
         <button>Add Watching Spot</button>
     </form>
-    <a href="/watchingspots/<%= ws._id %>">Back</a>
-</body>
-</html>
+    <a href="/watchingspots/<%= ws._id %>">Back</a> -->
+
+    <div class="row">
+        <h1 class="text-center">Edit Watching Spot</h1>
+        <div class="col-6 offset-3">
+            <form action="/watchingspots/<%= ws._id %>?_method=PUT" method="POST">
+                <div class="mb-3">
+                    <label class="form-label" for="title">Title: </label>
+                    <input class="form-control" type="text" id="title" name="watchingspot[title]"
+                        value="<%= ws.title %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="location">Location: </label>
+                    <input class="form-control" type="text" id="location" name="watchingspot[location]"
+                        value="<%= ws.location %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="img">Img Url: </label>
+                    <input class="form-control" type="text" id="img" name="watchingspot[image]" value="<%= ws.image %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="typeOfOwl">Type of Owls: </label>
+                    <input class="form-control" type="text" id="typeOfOwl" name="watchingspot[typeOfOwl]"
+                        value="<%= ws.typeOfOwl %>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description: </label>
+                    <textarea class="form-control" type="text" id="description"
+                        name="watchingspot[description]"><%= ws.description %></textarea>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-info">Update Watching Spot</button>
+                </div>
+            </form>
+            <a href="/watchingspots">Back</a>
+        </div>
+    </div>

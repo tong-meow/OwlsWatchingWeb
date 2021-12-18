@@ -22,7 +22,10 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() * 1000);
         const spot = new Watchingspot({
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
-            title: `${sample(descriptors)} ${sample(places)}`
+            title: `${sample(descriptors)} ${sample(places)}`,
+            image: 'https://source.unsplash.com/collection/3846912',
+            description: 'A lovely place for owls watching.',
+            typeOfOwl: 'Great Horned Owls',
         })
         await spot.save();
     }

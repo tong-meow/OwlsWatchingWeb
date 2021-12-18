@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const WatchingspotSchema = new Schema({
     title: String,
     location: String,
+    image: String,
     typeOfOwl: String,
     bestTimeOfYear: String,
     description: String,
