@@ -1,12 +1,9 @@
 <% layout('layouts/BoilerPlate') %>
     <h1>All Owls Watching Spots</h1>
-    <div>
-        <a href="/watchingspots/new">Add New</a>
-    </div>
 
     <% for (let ws of watchingspots) { %>
         <div class="card" mb-3>
-            <div class="row">
+            <div class="row" mb-5>
                 <div class="col-md-4">
                     <img class="img-fluid" alt="" src="<%= ws.image %>">
                 </div>

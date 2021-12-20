@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-6 offset-3">
-            <div class="card mb-8">
+            <div class="card mb-5">
                 <img src="<%= ws.image %>" class="card-img-top" alt="Owls Watching Spot">
                 <div class="card-body">
                     <h5 class="card-title">
@@ -13,9 +13,11 @@
                     </p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Location: <%= ws.location %>
+                    <li class="list-group-item"><b>Location:</b>
+                        <%= ws.location %>
                     </li>
-                    <li class="list-group-item">Type of Owls: <%= ws.typeOfOwl %>
+                    <li class="list-group-item"><b>Type of Owls:</b>
+                        <%= ws.typeOfOwl %>
                     </li>
                 </ul>
                 <div class="card-body">

@@ -16,30 +16,60 @@
     <div class="row">
         <h1 class="text-center">Edit Watching Spot</h1>
         <div class="col-6 offset-3">
-            <form action="/watchingspots/<%= ws._id %>?_method=PUT" method="POST">
+            <form action="/watchingspots/<%= ws._id %>?_method=PUT" method="POST" novalidate class="validated-form">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title: </label>
                     <input class="form-control" type="text" id="title" name="watchingspot[title]"
-                        value="<%= ws.title %>">
+                        value="<%= ws.title %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Invalid title.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="location">Location: </label>
                     <input class="form-control" type="text" id="location" name="watchingspot[location]"
-                        value="<%= ws.location %>">
+                        value="<%= ws.location %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Invalid location.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="img">Img Url: </label>
                     <input class="form-control" type="text" id="img" name="watchingspot[image]" value="<%= ws.image %>">
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Invalid url.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="typeOfOwl">Type of Owls: </label>
                     <input class="form-control" type="text" id="typeOfOwl" name="watchingspot[typeOfOwl]"
-                        value="<%= ws.typeOfOwl %>">
+                        value="<%= ws.typeOfOwl %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Invalid type of owls.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">Description: </label>
-                    <textarea class="form-control" type="text" id="description"
-                        name="watchingspot[description]"><%= ws.description %></textarea>
+                    <textarea class="form-control" type="text" id="description" name="watchingspot[description]"
+                        required><%= ws.description %></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Invalid description.
+                    </div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-info">Update Watching Spot</button>
