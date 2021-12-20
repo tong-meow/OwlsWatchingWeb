@@ -21,3 +21,8 @@
 
 ### 12/17/2021
 - Use bootstrap, added some basic style for the currently existed pages.
+
+### 12/19/2021
+- Added basic error handlers for 'POST' and 'PUT' request with Joi. If any required field is missing or is null, the error page with error messages shows up.
+- Added basic error handlers for 404 not found error.
+- Added handlers for other errors.
