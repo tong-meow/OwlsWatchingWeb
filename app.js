@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const { wsSchema } = require('./schemas.js');
+const { wsSchema, reviewSchema } = require('./schemas.js');
 const catchAsync = require('./utils/catchAsync');
 const methodOverride = require('method-override');
 const Watchingspot = require('./models/watchingspot');
@@ -39,6 +39,16 @@ const validateWS = (req, res, next) => {
     }
 }
 
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+}
+
 // GET / : homepage
 app.get('/', (req, res) => {
     res.render('home');
@@ -67,7 +77,7 @@ app.post('/watchingspots', validateWS, catchAsync(async (req, res) => {
 
 // GET /watchingspots/:id : view one watching spot's information page
 app.get('/watchingspots/:id', catchAsync(async (req, res) => {
-    const ws = await Watchingspot.findById(req.params.id);
+    const ws = await Watchingspot.findById(req.params.id).populate('reviews');
     res.render('watchingspots/show', { ws });
 }))
 
@@ -92,7 +102,7 @@ app.delete('/watchingspots/:id', catchAsync(async (req, res) => {
     res.redirect('/watchingspots');
 }))
 
-app.post('/watchingspots/:id/reviews', catchAsync(async (req, res) => {
+app.post('/watchingspots/:id/reviews', validateReview, catchAsync(async (req, res) => {
     const ws = await Watchingspot.findById(req.params.id);
     const review = new Review(req.body.review);
     ws.reviews.push(review);
