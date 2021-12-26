@@ -26,3 +26,9 @@
 - Added basic error handlers for 'POST' and 'PUT' request with Joi. If any required field is missing or is null, the error page with error messages shows up.
 - Added basic error handlers for 404 not found error.
 - Added handlers for other errors.
+
+### 12/25/2021
+- Added review part to every watching spot, created new review schema with rating and comment.
+- Added review validating check.
+- Added review deleting feature.
+- Modified watching spot deleting feature: if a watching spot is deleted, remove all reviews that are attached to it.
