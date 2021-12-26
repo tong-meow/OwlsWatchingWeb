@@ -9,6 +9,12 @@ const WatchingspotSchema = new Schema({
     typeOfOwl: String,
     bestTimeOfYear: String,
     description: String,
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ]
 });
 
 // exports the Watchingspot schema
