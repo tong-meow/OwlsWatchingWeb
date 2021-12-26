@@ -7,6 +7,7 @@ const catchAsync = require('./utils/catchAsync');
 const methodOverride = require('method-override');
 const Watchingspot = require('./models/watchingspot');
 const ExpressError = require('./utils/ExpressError');
+const Review = require('./models/review');
 
 mongoose.connect('mongodb://localhost:27017/owls-watch');
 
@@ -89,6 +90,15 @@ app.delete('/watchingspots/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Watchingspot.findByIdAndDelete(id);
     res.redirect('/watchingspots');
+}))
+
+app.post('/watchingspots/:id/reviews', catchAsync(async (req, res) => {
+    const ws = await Watchingspot.findById(req.params.id);
+    const review = new Review(req.body.review);
+    ws.reviews.push(review);
+    await review.save();
+    await ws.save();
+    res.redirect(`/watchingspots/${ws._id}`);
 }))
 
 // handle 404 not found error
