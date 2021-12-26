@@ -111,6 +111,13 @@ app.post('/watchingspots/:id/reviews', validateReview, catchAsync(async (req, re
     res.redirect(`/watchingspots/${ws._id}`);
 }))
 
+app.delete('/watchingspots/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    Watchingspot.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/watchingspots/${id}`);
+}))
+
 // handle 404 not found error
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));

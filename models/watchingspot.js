@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Review = require('./review');
 const Schema = mongoose.Schema;
 
 // create schema for 'WatchingSpot'
@@ -16,6 +17,18 @@ const WatchingspotSchema = new Schema({
         }
     ]
 });
+
+// query middleware:
+// - when deleting a watching spot, we'll delete all reviews attached to it.
+WatchingspotSchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Review.deleteMany({
+            _id: {
+                $in: doc.reviews
+            }
+        })
+    }
+})
 
 // exports the Watchingspot schema
 module.exports = mongoose.model('Watchingspot', WatchingspotSchema);
