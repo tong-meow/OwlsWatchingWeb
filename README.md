@@ -32,3 +32,8 @@
 - Added review validating check.
 - Added review deleting feature.
 - Modified watching spot deleting feature: if a watching spot is deleted, remove all reviews that are attached to it.
+
+### 1/9/2022
+- Reformatted the project files. Created two routes (watchingspot and review), reformatted the app.js file.
+- Added session and flash, so the success or error messages pop up now.
+- Used the bootstrap to style the flash messages.
