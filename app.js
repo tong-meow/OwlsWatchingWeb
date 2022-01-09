@@ -1,17 +1,19 @@
+// require the framework and supporting tools
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const { wsSchema, reviewSchema } = require('./schemas.js');
-const catchAsync = require('./utils/catchAsync');
+const session = require('express-session');
+const flash = require('connect-flash');
 const methodOverride = require('method-override');
-const Watchingspot = require('./models/watchingspot');
 const ExpressError = require('./utils/ExpressError');
-const Review = require('./models/review');
 
-mongoose.connect('mongodb://localhost:27017/owls-watch');
+// require the routers
+const watchingspots = require('./routes/watchingspots');
+const reviews = require('./routes/reviews');
 
 // connect to the mongo database
+mongoose.connect('mongodb://localhost:27017/owls-watch');
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Database connection error:"));
 db.once("open", () => {
@@ -27,96 +29,39 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-
-// check the validation for post and put
-const validateWS = (req, res, next) => {
-    const { error } = wsSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
+app.use(express.static(path.join(__dirname, 'public')));
+const sessionConfig = {
+    ///////// temporary secret key!!!! //////////
+    secret: 'asecretinstead',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        // for security
+        httpOnly: true,
+        // set the coockies' expire date to a week
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
     }
 }
+app.use(session(sessionConfig));
+app.use(flash());
 
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
+
+// middleware for the flash
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+
+// use routes
+app.use('/watchingspots', watchingspots);
+app.use('/watchingspots/:id/reviews', reviews);
 
 // GET / : homepage
 app.get('/', (req, res) => {
     res.render('home');
 })
-
-// GET /watchingspots : all owls watching spots index
-app.get('/watchingspots', catchAsync(async (req, res) => {
-    const watchingspots = await Watchingspot.find({});
-    res.render('watchingspots/index', { watchingspots });
-}))
-
-// GET /watchingspots/new : add a new watching spot
-app.get('/watchingspots/new', (req, res) => {
-    res.render('watchingspots/new');
-})
-
-// POST /watchingspots : post the new watching spot
-// and redirect to the index page of watching spots
-app.post('/watchingspots', validateWS, catchAsync(async (req, res) => {
-    // handle error if the body doesn't exist
-    // if (!req.body.watchingspot) throw new ExpressError('Invalid Watchingspot Data', 400);
-    const ws = new Watchingspot(req.body.watchingspot);
-    await ws.save();
-    res.redirect(`/watchingspots/${ws._id}`);
-}))
-
-// GET /watchingspots/:id : view one watching spot's information page
-app.get('/watchingspots/:id', catchAsync(async (req, res) => {
-    const ws = await Watchingspot.findById(req.params.id).populate('reviews');
-    res.render('watchingspots/show', { ws });
-}))
-
-// GET /watchingspots/:id/edit : edit page to a watching spot
-app.get('/watchingspots/:id/edit', catchAsync(async (req, res) => {
-    const ws = await Watchingspot.findById(req.params.id);
-    res.render('watchingspots/edit', { ws });
-}))
-
-// PUT /watchingspots/:id : submit edit
-app.put('/watchingspots/:id', validateWS, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const ws = await Watchingspot.findByIdAndUpdate(id, { ...req.body.watchingspot });
-    res.redirect(`/watchingspots/${ws._id}`);
-}))
-
-// DELETE /watchingspots/:id : submit delete request
-// and redirect to the index page of watching spots
-app.delete('/watchingspots/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Watchingspot.findByIdAndDelete(id);
-    res.redirect('/watchingspots');
-}))
-
-app.post('/watchingspots/:id/reviews', validateReview, catchAsync(async (req, res) => {
-    const ws = await Watchingspot.findById(req.params.id);
-    const review = new Review(req.body.review);
-    ws.reviews.push(review);
-    await review.save();
-    await ws.save();
-    res.redirect(`/watchingspots/${ws._id}`);
-}))
-
-app.delete('/watchingspots/:id/reviews/:reviewId', catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    Watchingspot.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/watchingspots/${id}`);
-}))
 
 // handle 404 not found error
 app.all('*', (req, res, next) => {
