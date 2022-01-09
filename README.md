@@ -27,6 +27,9 @@
 - Added basic error handlers for 404 not found error.
 - Added handlers for other errors.
 
+### 12/20/2021 - 1/10/2022
+Christmas Holiday! Merry Christmas!
+
 ### 12/25/2021
 - Added review part to every watching spot, created new review schema with rating and comment.
 - Added review validating check.
