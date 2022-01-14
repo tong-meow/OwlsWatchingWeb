@@ -40,3 +40,10 @@ Christmas Holiday! Merry Christmas!
 - Reformatted the project files. Created two routes (watchingspot and review), reformatted the app.js file.
 - Added session and flash, so the success or error messages pop up now.
 - Used the bootstrap to style the flash messages.
+
+### 1/13/2022
+- Imported Node.js middleware 'Passport'.
+- Using passport, added user authentication to the project.
+- Using sessions to keep track on a user's logging in status.
+- Added register page, login page, and updated the nav-bar.
+- Some pages require a logged in status to visit (e.g. add a new watching spot / edit a current watching spot / make comment).
