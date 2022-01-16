@@ -2,23 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const Watchingspot = require('../models/watchingspot');
-const { wsSchema } = require('../schemas.js');
-const { isLoggedIn } = require('../middleware');
+const { isLoggedIn, validateWS, verifyAuthor } = require('../middleware');
 
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
 
-
-// middleware: check the validation of form for creating a new watching spot
-const validateWS = (req, res, next) => {
-    const { error } = wsSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
 
 
 // GET /watchingspots : the index of all owls watching spots
@@ -38,6 +25,7 @@ router.post('/', isLoggedIn, validateWS, catchAsync(async (req, res) => {
     // handle error if the body doesn't exist
     // if (!req.body.watchingspot) throw new ExpressError('Invalid Watchingspot Data', 400);
     const ws = new Watchingspot(req.body.watchingspot);
+    ws.author = req.user._id;
     await ws.save();
     req.flash('success', 'Thank you! A new watching spot is successuly added!')
     res.redirect(`/watchingspots/${ws._id}`);
@@ -45,7 +33,12 @@ router.post('/', isLoggedIn, validateWS, catchAsync(async (req, res) => {
 
 // GET /watchingspots/:id : view one watching spot's information page
 router.get('/:id', catchAsync(async (req, res) => {
-    const ws = await Watchingspot.findById(req.params.id).populate('reviews');
+    const ws = await Watchingspot.findById(req.params.id).populate({
+        path:  'reviews',
+        populate: {
+            path: 'author',
+        }
+    }).populate('author');
     // if the id is not found, redirect to the index page
     // flash the error message
     if(!ws){
@@ -56,7 +49,7 @@ router.get('/:id', catchAsync(async (req, res) => {
 }))
 
 // GET /watchingspots/:id/edit : edit page of a watching spot
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, verifyAuthor, catchAsync(async (req, res) => {
     const ws = await Watchingspot.findById(req.params.id);
     // if the id is not found, redirect to the index page
     // flash the error message
@@ -68,7 +61,7 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
 }))
 
 // PUT /watchingspots/:id : submit edit
-router.put('/:id', isLoggedIn, validateWS, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, verifyAuthor, validateWS, catchAsync(async (req, res) => {
     const { id } = req.params;
     const ws = await Watchingspot.findByIdAndUpdate(id, { ...req.body.watchingspot });
     req.flash('success', 'Thank you! The watching spot is successufully updated!')
@@ -77,7 +70,7 @@ router.put('/:id', isLoggedIn, validateWS, catchAsync(async (req, res) => {
 
 // DELETE /watchingspots/:id : submit delete request
 // and redirect to the index page of watching spots
-router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, verifyAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
     await Watchingspot.findByIdAndDelete(id);
     req.flash('success', 'The watching spot is successufully deleted')

@@ -26,6 +26,9 @@ const seedDB = async () => {
             image: 'https://source.unsplash.com/collection/3846912',
             description: 'A lovely place for owls watching.',
             typeOfOwl: 'Great Horned Owls',
+            // this author ID is only used for testing in seeds
+            // the username is 'admin'
+            author: '61e12faa1c3ad7288119d87f'
         })
         await spot.save();
     }
