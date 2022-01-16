@@ -1,12 +1,14 @@
 const { wsSchema, reviewSchema } = require('./schemas.js');
 const ExpressError = require('./utils/ExpressError');
 const Watchingspot = require('./models/watchingspot');
+const Review = require('./models/review');
 
 
 // isLoggedIn is a middleware to check if a user is currently logged in
 module.exports.isLoggedIn = (req, res, next) => {
     if(!req.isAuthenticated()){
-        req.session.returnTo = req.originalUrl;
+        const{ id } = req.params;
+        req.session.returnTo = (req.query._method === 'DELETE' ? `/watchingspots/${id}` : req.originalUrl);
         req.flash('error', 'Please sign in first');
         return res.redirect('/login');
     }
@@ -31,7 +33,7 @@ module.exports.verifyAuthor = async(req, res, next) => {
     const { id } = req.params;
     const wspot = await Watchingspot.findById(id);
     // notice: admin is authorized
-    if (!req.user._id == '61e12faa1c3ad7288119d87f' && 
+    if (!req.user._id == '61e12faa1c3ad7288119d87f' || 
         !wspot.author.equals(req.user._id)) {
         req.flash('error', 'Sorry, you do not have permission to do that');
         return res.redirect(`/watchingspots/${id}`);
@@ -49,4 +51,18 @@ module.exports.validateReview = (req, res, next) => {
     } else {
         next();
     }
+}
+
+
+// verifyReviewAuthor is a middleware to verify if the current user is the author of the review
+module.exports.verifyReviewAuthor = async(req, res, next) => {
+    const { id, reviewId } = req.params;
+    const review = await Review.findById(reviewId);
+    // notice: admin is authorized
+    if (!req.user._id == '61e12faa1c3ad7288119d87f' || 
+        !review.author.equals(req.user._id)) {
+        req.flash('error', 'Sorry, you do not have permission to do that');
+        return res.redirect(`/watchingspots/${id}`);
+    }
+    next();
 }

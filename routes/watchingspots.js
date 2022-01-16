@@ -33,7 +33,12 @@ router.post('/', isLoggedIn, validateWS, catchAsync(async (req, res) => {
 
 // GET /watchingspots/:id : view one watching spot's information page
 router.get('/:id', catchAsync(async (req, res) => {
-    const ws = await Watchingspot.findById(req.params.id).populate('reviews').populate('author');
+    const ws = await Watchingspot.findById(req.params.id).populate({
+        path:  'reviews',
+        populate: {
+            path: 'author',
+        }
+    }).populate('author');
     // if the id is not found, redirect to the index page
     // flash the error message
     if(!ws){

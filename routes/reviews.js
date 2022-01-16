@@ -9,7 +9,7 @@ const Watchingspot = require('../models/watchingspot');
 const Review = require('../models/review');
 
 // require middlewares
-const { validateReview } = require('../middleware');
+const { validateReview, isLoggedIn, verifyReviewAuthor } = require('../middleware');
 
 // require other supporting tools
 const catchAsync = require('../utils/catchAsync');
@@ -17,9 +17,10 @@ const catchAsync = require('../utils/catchAsync');
 
 
 // create a review for a watching spot
-router.post('/', validateReview, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     const ws = await Watchingspot.findById(req.params.id);
     const review = new Review(req.body.review);
+    review.author = req.user._id;
     ws.reviews.push(review);
     await review.save();
     await ws.save();
@@ -28,7 +29,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
 }))
 
 // delete a watching spot review
-router.delete('/:reviewId', catchAsync(async (req, res) => {
+router.delete('/:reviewId', isLoggedIn, verifyReviewAuthor, catchAsync(async (req, res) => {
     const { id, reviewId } = req.params;
     await Watchingspot.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);
