@@ -10,6 +10,10 @@ const WatchingspotSchema = new Schema({
     typeOfOwl: String,
     bestTimeOfYear: String,
     description: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,

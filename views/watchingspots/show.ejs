@@ -22,11 +22,18 @@
                 </ul>
                 <div class="card-body">
                     <a class="card-link btn btn-success" href="/watchingspots" class="card-link">Back</a>
+                    <% if ( currentUser ) { %>
+                        <% if ( currentUser._id == '61e12faa1c3ad7288119d87f' || ws.author.equals(currentUser._id)) { %>
                     <a class="card-link btn btn-success" href="/watchingspots/<%= ws._id %>/edit"
                         class="card-link">Edit</a>
                     <form class="d-inline" action="/watchingspots/<%= ws._id %>?_method=DELETE" method="POST">
                         <button class="card-link btn btn-warning">Delete</button>
                     </form>
+                        <% } %>
+                    <% } %>
+                </div>
+                <div class="card-footer text-muted">
+                    <b>Contributor:</b> <%= ws.author.username %>
                 </div>
             </div>
         </div>

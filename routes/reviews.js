@@ -1,28 +1,19 @@
 // require express and router
 const express = require('express');
+
 // set mergeParams to true to use the request params
 const router = express.Router({ mergeParams: true });
 
 // require schemas and models
-const { reviewSchema } = require('../schemas.js');
 const Watchingspot = require('../models/watchingspot');
 const Review = require('../models/review');
 
+// require middlewares
+const { validateReview } = require('../middleware');
+
 // require other supporting tools
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
 
-
-// middleware: check if the review is validate
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
 
 
 // create a review for a watching spot
