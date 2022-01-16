@@ -47,3 +47,10 @@ Christmas Holiday! Merry Christmas!
 - Using sessions to keep track on a user's logging in status.
 - Added register page, login page, and updated the nav-bar.
 - Some pages require a logged in status to visit (e.g. add a new watching spot / edit a current watching spot / make comment).
+
+### 1/15/2022
+- Added authority checking for watching spots and reviews.
+- Updated the model of Watchingspot and Review, added a field of author with a user id stored in database.
+- Added feature to let only the 'already logged in' users to create a new watching spot or leave a review.
+- Added feature to let only the author of a watching spot or a review can edit or delete her spot or review.
+- Hided the edit / delete button for viewers who haven't logged in.
