@@ -54,3 +54,6 @@ Christmas Holiday! Merry Christmas!
 - Added feature to let only the 'already logged in' users to create a new watching spot or leave a review.
 - Added feature to let only the author of a watching spot or a review can edit or delete her spot or review.
 - Hided the edit / delete button for viewers who haven't logged in.
+
+### 1/16/2022
+- Restructured routes, added controller files.
