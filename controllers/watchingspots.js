@@ -2,6 +2,11 @@
 const Watchingspot = require('../models/watchingspot');
 const { cloudinary } = require('../cloudinary');
 
+// require Mapbox tool
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapboxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({accessToken: mapboxToken});
+
 module.exports.index = async (req, res) => {
     const watchingspots = await Watchingspot.find({});
     res.render('watchingspots/index', { watchingspots });
@@ -12,9 +17,12 @@ module.exports.renderNewForm = (req, res) => {
 }
 
 module.exports.createWS = async (req, res, next) => {
-    // handle error if the body doesn't exist
-    // if (!req.body.watchingspot) throw new ExpressError('Invalid Watchingspot Data', 400);
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.watchingspot.location,
+        limit: 1
+    }).send()
     const ws = new Watchingspot(req.body.watchingspot);
+    ws.geometry = geoData.body.features[0].geometry;
     ws.images = req.files.map(f => ({ url: f.path, filename: f.filename}));
     ws.author = req.user._id;
     await ws.save();
