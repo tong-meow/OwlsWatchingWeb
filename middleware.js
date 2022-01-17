@@ -33,7 +33,7 @@ module.exports.verifyAuthor = async(req, res, next) => {
     const { id } = req.params;
     const wspot = await Watchingspot.findById(id);
     // notice: admin is authorized
-    if (!req.user._id == '61e12faa1c3ad7288119d87f' || 
+    if (!req.user._id == '61e12faa1c3ad7288119d87f' && 
         !wspot.author.equals(req.user._id)) {
         req.flash('error', 'Sorry, you do not have permission to do that');
         return res.redirect(`/watchingspots/${id}`);
@@ -59,7 +59,7 @@ module.exports.verifyReviewAuthor = async(req, res, next) => {
     const { id, reviewId } = req.params;
     const review = await Review.findById(reviewId);
     // notice: admin is authorized
-    if (!req.user._id == '61e12faa1c3ad7288119d87f' || 
+    if (!req.user._id == '61e12faa1c3ad7288119d87f' && 
         !review.author.equals(req.user._id)) {
         req.flash('error', 'Sorry, you do not have permission to do that');
         return res.redirect(`/watchingspots/${id}`);

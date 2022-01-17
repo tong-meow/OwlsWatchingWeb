@@ -23,12 +23,21 @@ const seedDB = async () => {
         const spot = new Watchingspot({
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
-            image: 'https://source.unsplash.com/collection/3846912',
             description: 'A lovely place for owls watching.',
             typeOfOwl: 'Great Horned Owls',
             // this author ID is only used for testing in seeds
             // the username is 'admin'
-            author: '61e12faa1c3ad7288119d87f'
+            author: '61e12faa1c3ad7288119d87f',
+            images: [
+                {
+                  url: 'https://res.cloudinary.com/owlstudio/image/upload/v1642387655/owls-watch/c5phbh9osr0dfcbtwrht.png',
+                  filename: 'owls-watch/c5phbh9osr0dfcbtwrht',
+                },
+                {
+                  url: 'https://res.cloudinary.com/owlstudio/image/upload/v1642387656/owls-watch/ngpsuklfjhtgncdbitcs.jpg',
+                  filename: 'owls-watch/ngpsuklfjhtgncdbitcs',
+                }
+              ]
         })
         await spot.save();
     }
