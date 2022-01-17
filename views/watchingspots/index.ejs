@@ -1,32 +1,36 @@
 <% layout('layouts/BoilerPlate') %>
-    <h1>All Owls Watching Spots</h1>
+<div id="map" style="width:100%; height: 300px"></div>
+<h1>All Owls Watching Spots</h1>
 
-    <% for (let ws of watchingspots) { %>
-        <div class="card" mb-3>
-            <div class="row" mb-5>
-                <div class="col-md-4">
-                    <% if (ws.images.length) { %>
-                    <img class="img-fluid" alt="" src="<%= ws.images[0].url %>">
-                    <% } else { %>
-                    <img class="img-fluid" alt="" src="https://res.cloudinary.com/owlstudio/image/upload/v1642387655/owls-watch/c5phbh9osr0dfcbtwrht.png">   
-                    <% } %>
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <%= ws.title %>
-                        </h5>
-                        <p class="car-text">
-                            <%= ws.description %>
-                        </p>
-                        <p class="car-text">
-                            <small class="text-muted">
-                                <%= ws.location %>
-                            </small>
-                        </p>
-                        <a class="btn btn-primary" href="/watchingspots/<%=ws._id%>">View</a>
-                    </div>
+<% for (let ws of watchingspots) { %>
+    <div class="card" mb-3>
+        <div class="row" mb-5>
+            <div class="col-md-4">
+            <% if (ws.images.length) { %>
+                <img class="img-fluid" alt="" src="<%= ws.images[0].url %>">
+            <% } else { %>
+                <img class="img-fluid" alt="" src="https://res.cloudinary.com/owlstudio/image/upload/v1642387655/owls-watch/c5phbh9osr0dfcbtwrht.png">   
+            <% } %>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title"><%= ws.title %></h5>
+                    <p class="car-text"><%= ws.description %></p>
+                    <p class="car-text">
+                        <small class="text-muted"><%= ws.location %></small>
+                    </p>
+                    <a class="btn btn-primary" href="/watchingspots/<%=ws._id%>">View</a>
                 </div>
             </div>
         </div>
-        <% } %>
+    </div>
+<% } %>
+
+
+<script>
+    const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+    const watchingspots = {features: <%- JSON.stringify(watchingspots) %>}
+</script>
+
+
+<script src="/javascripts/clusterMap.js"></script>
