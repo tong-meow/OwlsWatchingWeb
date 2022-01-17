@@ -17,6 +17,17 @@ ImageSchema.virtual('thumbnail').get(function(){
 const WatchingspotSchema = new Schema({
     title: String,
     location: String,
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     images: [ImageSchema],
     typeOfOwl: String,
     bestTimeOfYear: String,

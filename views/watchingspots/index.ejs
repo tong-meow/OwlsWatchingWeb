@@ -5,7 +5,11 @@
         <div class="card" mb-3>
             <div class="row" mb-5>
                 <div class="col-md-4">
+                    <% if (ws.images.length) { %>
                     <img class="img-fluid" alt="" src="<%= ws.images[0].url %>">
+                    <% } else { %>
+                    <img class="img-fluid" alt="" src="https://res.cloudinary.com/owlstudio/image/upload/v1642387655/owls-watch/c5phbh9osr0dfcbtwrht.png">   
+                    <% } %>
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
