@@ -57,3 +57,7 @@ Christmas Holiday! Merry Christmas!
 
 ### 1/16/2022
 - Restructured routes, added controller files.
+- Set the environment and linked to Cloudinary cloud.
+- Added features for photo uploading in /edit and /new.
+- Added features for deleting photos in /edit.
+- Automatically delete photos in both Mongo DB and Cloudinary when a user delete a photo or delete a whole watching spot.
