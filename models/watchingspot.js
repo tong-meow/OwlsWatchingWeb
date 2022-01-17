@@ -12,6 +12,7 @@ ImageSchema.virtual('thumbnail').get(function(){
     return this.url.replace('/upload', '/upload/w_200');
 });
 
+const opts = { toJSON: { virtuals: true }};
 
 // create schema for 'WatchingSpot'
 const WatchingspotSchema = new Schema({
@@ -42,6 +43,11 @@ const WatchingspotSchema = new Schema({
             ref: 'Review'
         }
     ]
+}, opts);
+
+WatchingspotSchema.virtual('properties.popUpMarkup').get(function(){
+    return `<h6><a href="/watchingspots/${this._id}" style="color:#00695C">${this.title}</a></h6>
+    <p>${this.description.substring(0,40)}...</p>`
 });
 
 // query middleware:

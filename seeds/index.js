@@ -18,7 +18,7 @@ const sample = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
     await Watchingspot.deleteMany({});
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 200; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const spot = new Watchingspot({
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
@@ -29,8 +29,11 @@ const seedDB = async () => {
             // the username is 'admin'
             author: '61e12faa1c3ad7288119d87f',
             geometry: {
-              type: "Point",
-              coordinates: [-113.1331, 47.0202]
+                type: "Point",
+                coordinates: [
+                  cities[random1000].longitude,
+                  cities[random1000].latitude,
+                ]
             },
             images: [
                 {
