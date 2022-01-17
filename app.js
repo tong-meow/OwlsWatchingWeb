@@ -14,6 +14,8 @@ const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const helmet = require('helmet');
+const MongoDBStore = require("connect-mongo")(session);
 
 // require the routers
 const userRoutes = require('./routes/users');
@@ -21,7 +23,19 @@ const watchingspotsRoutes = require('./routes/watchingspots');
 const reviewsRoutes = require('./routes/reviews');
 
 // connect to the mongo database
+// --> local
 mongoose.connect('mongodb://localhost:27017/owls-watch');
+// --> Mongo Atlas
+// const { MongoClient } = require('mongodb');
+// const dbUrl = process.env.DB_URL;
+// const client = new MongoClient(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+// client.connect(err => {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });
+
+
 const db = mongoose.connection;
 // handle database connection error
 db.on("error", console.error.bind(console, "Database connection error:"));
@@ -43,14 +57,27 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // sessions setting
+const store = new MongoDBStore({
+    url: 'mongodb://localhost:27017/owls-watch', // this is currently local
+    secret: 'asecretinstead',
+    touchAfter: 24 * 60 * 60
+});
+
+store.on("error", function(e) {
+    console.log("session store error", e);
+})
+
 const sessionConfig = {
     ///////// temporary secret key!!!! //////////
+    store,
+    name: 'session',
     secret: 'asecretinstead',
     resave: false,
     saveUninitialized: true,
     cookie: {
         // for security
         httpOnly: true,
+        // secure: true, //==> switch to https in prod
         // set the coockies' expire date to a week
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -58,6 +85,58 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig));
 app.use(flash());
+
+
+// helmet security setting
+// set the resources used
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://api.mapbox.com/",
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+];
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://api.mapbox.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+    "https://cdn.jsdelivr.net",
+];
+const connectSrcUrls = [
+    "https://api.mapbox.com/",
+    "https://a.tiles.mapbox.com/",
+    "https://b.tiles.mapbox.com/",
+    "https://events.mapbox.com/",
+];
+const fontSrcUrls = [];
+// move the arrays above the block list from helmet
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/owlstudio/",
+                "https://images.unsplash.com/",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+            mediaSrc   : [ "https://res.cloudinary.com/owls-watch/" ],
+            childSrc   : [ "blob:" ]
+        },
+    })
+);
+
 
 
 // passport setting

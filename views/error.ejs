@@ -11,9 +11,9 @@
                 <hr>
                 <!-- show error messages on page
                 should commented out finally!!! -->
-                <p class="mb-0">
-                    <%= err.stack %>
-                </p>
+                <% if (process.env.NODE_ENV !== "production") { %>
+                <p><%= err.stack %></p>
+                <% } %>
             </div>
         </div>
     </div>
