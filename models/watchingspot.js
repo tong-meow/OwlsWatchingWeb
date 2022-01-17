@@ -2,11 +2,22 @@ const mongoose = require('mongoose');
 const Review = require('./review');
 const Schema = mongoose.Schema;
 
+// create schema for pictures
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+});
+
+ImageSchema.virtual('thumbnail').get(function(){
+    return this.url.replace('/upload', '/upload/w_200');
+});
+
+
 // create schema for 'WatchingSpot'
 const WatchingspotSchema = new Schema({
     title: String,
     location: String,
-    image: String,
+    images: [ImageSchema],
     typeOfOwl: String,
     bestTimeOfYear: String,
     description: String,

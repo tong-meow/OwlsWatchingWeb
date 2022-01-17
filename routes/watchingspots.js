@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
 
 // require middlewares
 const { isLoggedIn, validateWS, verifyAuthor } = require('../middleware');
@@ -18,7 +21,8 @@ router.route('/')
     .get(catchAsync(watchingspots.index))
     // POST /watchingspots : post the new watching spot
     // and redirect to the index page of watching spots
-    .post(isLoggedIn, validateWS, catchAsync(watchingspots.createWS));
+    // tempoprary!!!!!!!!!!!!!!!!
+    .post(isLoggedIn, upload.array('image'), validateWS, catchAsync(watchingspots.createWS));
 
 // GET /watchingspots/new : create a new watching spot
 router.get('/new', isLoggedIn, watchingspots.renderNewForm);
@@ -27,7 +31,7 @@ router.route('/:id')
     // GET /watchingspots/:id : view one watching spot's information page
     .get(catchAsync(watchingspots.displayWS))
     // PUT /watchingspots/:id : submit edit
-    .put(isLoggedIn, verifyAuthor, validateWS, catchAsync(watchingspots.updateWS))
+    .put(isLoggedIn, verifyAuthor, upload.array('image'), validateWS, catchAsync(watchingspots.updateWS))
     // DELETE /watchingspots/:id : submit delete request
     // and redirect to the index page of watching spots
     .delete(isLoggedIn, verifyAuthor, catchAsync(watchingspots.deleteWS));

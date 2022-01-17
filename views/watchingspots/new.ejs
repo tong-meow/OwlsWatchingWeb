@@ -15,16 +15,12 @@
     <div class="row">
         <h1 class="text-center">New Watching Spot</h1>
         <div class="col-6 offset-3">
-            <form action="/watchingspots" method="POST" novalidate class="validated-form">
+            <form action="/watchingspots" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title: </label>
                     <input class="form-control" type="text" id="title" name="watchingspot[title]" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Invalid title.
-                    </div>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">Invalid title.</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="location">Location: </label>
@@ -36,36 +32,29 @@
                         Invalid location.
                     </div>
                 </div>
+                <!-- <input type="file" name="image" id="" multiple> -->
                 <div class="mb-3">
+                    <label for="formFileMultiple" class="form-label">Pictures:</label>
+                    <input class="form-control" type="file" name="image" id="image" multiple>
+                </div>
+                <!-- <div class="mb-3">
                     <label class="form-label" for="img">Img Url: </label>
                     <input class="form-control" type="text" id="img" name="watchingspot[image]" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Invalid url.
-                    </div>
-                </div>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">Invalid url.</div>
+                </div> -->
                 <div class="mb-3">
                     <label class="form-label" for="typeOfOwl">Type of Owls: </label>
                     <input class="form-control" type="text" id="typeOfOwl" name="watchingspot[typeOfOwl]" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Invalid type of owls.
-                    </div>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">Invalid type of owls.</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">Description: </label>
                     <textarea class="form-control" type="text" id="description" name="watchingspot[description]"
                         required></textarea>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Invalid description.
-                    </div>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">Invalid description.</div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Add Watching Spot</button>
