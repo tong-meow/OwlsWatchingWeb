@@ -61,3 +61,7 @@ Christmas Holiday! Merry Christmas!
 - Added features for photo uploading in /edit and /new.
 - Added features for deleting photos in /edit.
 - Automatically delete photos in both Mongo DB and Cloudinary when a user delete a photo or delete a whole watching spot.
+
+### 1/17/2022
+- Using Mapbox, added map to each watching spot.
+- Added feature that when a new watching spot is created, automatically generate a map with a point on the target location.
