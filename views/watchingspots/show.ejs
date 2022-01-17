@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/stylesheets/stars.css">
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-4">
         <div id="wsCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <% ws.images.forEach((img, i) => {  %>
@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-4">
         <div id='map' style='width: 400px; height: 300px;'></div>
         <% if( currentUser ){ %>
             <h2>Leave a Review</h2>
@@ -96,7 +96,7 @@
 
 <script>
     const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-    const ws = '<%- JSON.stringify(ws) %>';
+    const ws = <%- JSON.stringify(ws) %>;
 </script>
 
 <script src="/javascripts/showPageMap.js"></script>

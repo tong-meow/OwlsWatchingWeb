@@ -1,16 +1,16 @@
 mapboxgl.accessToken = mapToken;
 
-const watchingspot = JSON.parse(ws);
-
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v10', // stylesheet location
-    center: watchingspot.geometry.coordinates, // starting position [lng, lat]
+    center: ws.geometry.coordinates, // starting position [lng, lat]
     zoom: 4 // starting zoom
 });
 
+map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+
 new mapboxgl.Marker()
-    .setLngLat(watchingspot.geometry.coordinates)
+    .setLngLat(ws.geometry.coordinates)
     // .setPopup(
     //     new mapboxgl.Popup({ offset: 20 })
     //         .setHTML(
