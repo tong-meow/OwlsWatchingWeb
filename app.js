@@ -24,16 +24,14 @@ const reviewsRoutes = require('./routes/reviews');
 
 // connect to the mongo database
 // --> local
-mongoose.connect('mongodb://localhost:27017/owls-watch');
+// mongoose.connect('mongodb://localhost:27017/owls-watch');
 // --> Mongo Atlas
-// const { MongoClient } = require('mongodb');
-// const dbUrl = process.env.DB_URL;
-// const client = new MongoClient(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
-// client.connect(err => {
-//   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/owls-watch';
+
+mongoose.connect(dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
 
 const db = mongoose.connection;
@@ -56,10 +54,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const secret = process.env.SECRET || 'asecretinstead';
+
 // sessions setting
 const store = new MongoDBStore({
-    url: 'mongodb://localhost:27017/owls-watch', // this is currently local
-    secret: 'asecretinstead',
+    // url: 'mongodb://localhost:27017/owls-watch', // this is currently local
+    url: dbUrl,
+    secret,
     touchAfter: 24 * 60 * 60
 });
 
@@ -71,7 +72,7 @@ const sessionConfig = {
     ///////// temporary secret key!!!! //////////
     store,
     name: 'session',
-    secret: 'asecretinstead',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -182,7 +183,8 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err });
 })
 
+const port = process.env.PORT || 3000;
 // start listening on localhost port 3000
-app.listen(3000, () => {
-    console.log("Serving on port 3000.");
+app.listen(port, () => {
+    console.log(`Serving on port ${port}.`);
 })
