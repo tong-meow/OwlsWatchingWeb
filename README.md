@@ -72,4 +72,4 @@ Christmas Holiday! Merry Christmas!
 - Delopyed the application on Heroku.
 
 ### The very first version 1.0.0
-view it here: <a href='https://lit-inlet-00226.herokuapp.com/'>OwlsWatch</a>
+view it here: <a href='https://lit-inlet-00226.herokuapp.com/'>OwlsWatching</a>
