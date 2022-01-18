@@ -67,3 +67,9 @@ Christmas Holiday! Merry Christmas!
 - Added feature that when a new watching spot is created, automatically generate a map with a point on the target location.
 - Added a cluster USA map on the index page. User can go into any watching spot with this map.
 - Modified some pages' style.
+- Added basic security checkings with Helmet.
+- Linked the application to a cloud database Mongo Atlas.
+- Delopyed the application on Heroku.
+
+### The very first version 1.0.0
+view it here: <a href='https://lit-inlet-00226.herokuapp.com/'>OwlsWatch</a>
